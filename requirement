@@ -1,0 +1,105 @@
+let employees = [
+  {
+    id: 101,
+    name: "Kavi",
+    department: "Sales",
+    salary: 500000,
+    bonusPercentage: 10,
+    salesRate: 120000, // Added salesRate
+  },
+  {
+    id: 102,
+    name: "Naveen",
+    department: "IT",
+    salary: 700000,
+    bonusPercentage: 20,
+    experienceYears: 3, // Added experienceYears
+  },
+  {
+    id: 103,
+    name: "Sakthi",
+    department: "Sales",
+    salary: 500000,
+    bonusPercentage: 10,
+    salesRate: 90000, // Added salesRate
+  },
+  {
+    id: 102,
+    name: "Naveen",
+    department: "IT",
+    salary: 700000,
+    bonusPercentage: 20,
+    experienceYears: 3, // Added experienceYears
+  },
+  {
+    id: 104,
+    name: "Bose",
+    department: "HR",
+    salary: 45000,
+    bonusPercentage: 5,
+  },
+];
+
+const departmentChoosen = "HR";
+
+// Function to remove duplicates based on 'id'
+function removeDuplicate() {
+  let uniqueEmployee = [];
+  let uniqueSet = new Set();
+  for (const employee of employees) {
+    if (!uniqueSet.has(employee.id)) {
+      uniqueSet.add(employee.id);
+      uniqueEmployee.push(employee);
+    }
+  }
+  return uniqueEmployee;
+}
+
+// Function to filter employees by chosen department
+function toChooseDept(uniqueEmployee) {
+  return uniqueEmployee.filter(
+    (employee) => employee.department === departmentChoosen
+  );
+}
+
+// Function to calculate bonus
+function calculateBonus(employee) {
+  let bonus = 0;
+
+  if (employee.department === "HR") {
+    if (employee.salary < 50000) {
+      bonus = employee.salary * 10 / 100;
+    }
+  } else if (employee.department === "Engineering") {
+    if (employee.experienceYears > 2) {
+      bonus = employee.salary * 15 / 100;
+    }
+  } else if (employee.department === "Sales") {
+    if (employee.salesRate < 100000) {
+      bonus = employee.salesRate * 5 / 100;
+    } else if (employee.salesRate >= 100000 && employee.salesRate <= 500000) {
+      bonus = employee.salesRate * 10 / 100;
+    } else {
+      bonus = employee.salesRate * 20 / 100;
+    }
+  }
+
+  return bonus;
+}
+
+const uniqueEmployees = removeDuplicate(employees);
+const filteredEmployees = toChooseDept(uniqueEmployees);
+
+const result = filteredEmployees.map((employee) => ({
+  ...employee,
+  bonus: calculateBonus(employee),
+  totalCompensation: employee.salary + calculateBonus(employee), // calculate total compensation
+}));
+const filtered = filteredEmployees.map((employee) => ({
+  name: employee.name,
+  salary: employee.salary,
+  bonus: calculateBonus(employee),
+  totalCompensation: employee.salary + calculateBonus(employee), // total compensation = salary + bonus
+}));
+console.log("Filtered Employees:", filtered);
+console.log("Updated Employees:", result);
